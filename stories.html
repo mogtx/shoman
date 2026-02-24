@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>القصص - مكتبة البيان</title>
+
+<style>
+body {
+    background: linear-gradient(135deg, #232946 60%, #eaf2fb 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Cairo', Arial, sans-serif;
+    margin: 0;
+}
+
+.container {
+    background: #f6f7fb;
+    padding: 40px 30px;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(35,41,70,0.08);
+    text-align: center;
+    margin-top: 40px;
+    width: 90%;
+    max-width: 1100px;
+}
+
+/* العنوان */
+.stories-title {
+    font-size: 3rem;
+    font-weight: 900;
+    color: #232946;
+    background: linear-gradient(135deg, #eaf2fb 60%, #d1dbe8 100%);
+    border: 3px solid #232946;
+    border-radius: 24px;
+    padding: 22px 0;
+    margin-bottom: 30px;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 8px #d1dbe8;
+    transition: box-shadow 0.3s, border-color 0.3s;
+}
+.stories-title:hover {
+    box-shadow: 0 12px 40px rgba(35,41,70,0.18);
+    border-color: #2d7be5;
+}
+
+/* أزرار الفلترة */
+.filter-buttons {
+    margin-bottom: 30px;
+}
+
+.filter-buttons button {
+    padding: 14px 32px;
+    margin: 8px;
+    border-radius: 35px;
+    border: none;
+    font-size: 1.1rem;
+    font-weight: bold;
+    background: #e0eafc;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.filter-buttons button.active,
+.filter-buttons button:hover {
+    background: linear-gradient(135deg, #2d7be5, #6c63ff);
+    color: white;
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(45,123,229,0.35);
+}
+
+/* البحث */
+.search-container {
+    position: relative;
+    width: 320px;
+    margin: 0 auto 35px auto;
+}
+
+.search-box {
+    width: 100%;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 30px;
+    background: #f1f3ff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    font-size: 15px;
+    direction: rtl;
+    text-align: right;
+    transition: 0.3s;
+}
+
+.search-box:focus {
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(45,123,229,0.10);
+    outline: none;
+}
+
+/* الشبكة */
+.stories-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 35px;
+}
+
+/* الكرت */
+@keyframes border-animate {
+    0% { border-radius: 24px 28px 24px 28px; }
+    50% { border-radius: 28px 24px 28px 24px; }
+    100% { border-radius: 24px 28px 24px 28px; }
+}
+
+.story-card {
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: 0 6px 20px rgba(35,41,70,0.08);
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    transition: 0.3s;
+    animation: border-animate 3s ease infinite;
+}
+
+.story-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 90px;
+    background: linear-gradient(135deg, #2d7be5 0%, #6c63ff 50%, #a3bffa 100%);
+    z-index: 1;
+}
+
+.story-card:hover {
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 20px 50px rgba(107,99,255,0.25);
+}
+
+.story-title {
+    position: relative;
+    z-index: 2;
+    color: #fff;
+    font-size: 1.4rem;
+    font-weight: 800;
+    padding: 35px 20px 25px 20px;
+}
+
+/* رابط كامل للكرت */
+.card-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    height: 100%;
+}
+
+/* زر الرجوع */
+.back {
+    display: inline-block;
+    margin-top: 40px;
+    color: #fff;
+    background: #232946;
+    padding: 10px 25px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.back:hover {
+    background: #2d7be5;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h1 class="stories-title">القصص</h1>
+
+<div class="filter-buttons">
+<button class="active" onclick="filterCategory('الكل', this)">عرض الكل</button>
+<button onclick="filterCategory('قصص الأنبياء', this)">قصص الأنبياء</button>
+<button onclick="filterCategory('قصص أطفال قصيرة', this)">قصص أطفال قصيرة</button>
+</div>
+
+<div class="search-container">
+<input type="text" id="searchBox" class="search-box" placeholder="ابحث عن قصة دينية أو للأطفال...">
+</div>
+
+<ul class="stories-list" id="storiesList"></ul>
+
+<a class="back" href="ex.html">العودة للصفحة الرئيسية</a>
+</div>
+
+<script>
+let currentCategory = "الكل";
+
+const stories = [
+{ title: "قصة حياة النبي محمد ﷺ", category: "قصص الأنبياء", keywords: "دينية نبي اسلام", link: "pdfs/story-mohamad.pdf" },
+{ title: "غَزوة خيبر", category: "قصص الأنبياء", keywords: "دينية نبي", link: "pdfs/story-khaibar.pdf" },
+ { title: "قصة النبي إبراهيم عليه السلام", category: "قصص الأنبياء", keywords: "دينية نبي ابراهيم", link: "pdfs/story-ibrahim.pdf" },
+ { title: "قصة النبي يوسف عليه السلام", category: "قصص الأنبياء", keywords: "دينية نبي يوسف", link: "pdfs/story-yosef.pdf" },
+
+{ title: "الدُب المريض", category: "قصص أطفال قصيرة", keywords: "اطفال قصيرة", link: "pdfs/story-pear.pdf" },
+{ title: "ليلى و الذئب", category: "قصص أطفال قصيرة", keywords: "اطفال قصيرة", link: "pdfs/story-laila.pdf" },
+{ title: "رحلة الى باطن الأرض", category: "قصص أطفال قصيرة", keywords: "اطفال قصيرة", link: "pdfs/story-batn.pdf" }
+];
+
+function displayStories(data) {
+const list = document.getElementById("storiesList");
+list.innerHTML = "";
+
+if(data.length === 0){
+list.innerHTML = "<li style='grid-column:1/-1;padding:40px;color:#888'>لم يتم العثور على قصص</li>";
+return;
+}
+
+data.sort((a,b)=> a.category.localeCompare(b.category));
+
+data.forEach(story => {
+const li = document.createElement("li");
+li.className = "story-card";
+
+li.innerHTML = `<a href="${story.link}" class="card-link" target="_blank" rel="noopener noreferrer"><div class="story-title">${story.title}</div></a>`;
+list.appendChild(li);
+});
+}
+
+function filterCategory(category, btn){
+currentCategory = category;
+
+document.querySelectorAll(".filter-buttons button")
+.forEach(b => b.classList.remove("active"));
+
+btn.classList.add("active");
+applyFilters();
+}
+
+document.getElementById("searchBox").addEventListener("keyup", applyFilters);
+
+function applyFilters(){
+const searchValue = document.getElementById("searchBox").value.trim();
+
+let filtered = stories.filter(story => {
+
+let matchCategory = currentCategory === "الكل" || story.category === currentCategory;
+
+let matchSearch =
+story.title.includes(searchValue) ||
+story.keywords.includes(searchValue) ||
+story.category.includes(searchValue);
+
+return matchCategory && matchSearch;
+});
+
+displayStories(filtered);
+}
+
+displayStories(stories);
+</script>
+
+</body>
+</html>

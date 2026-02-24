@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>المقالات - مكتبة البيان</title>
+
+<style>
+body {
+    background: linear-gradient(135deg, #232946 60%, #eaf2fb 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Cairo', Arial, sans-serif;
+    margin: 0;
+}
+
+.container {
+    background: #f6f7fb;
+    padding: 40px 30px;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(35,41,70,0.08);
+    text-align: center;
+    margin-top: 40px;
+    width: 90%;
+    max-width: 900px;
+}
+
+/* العنوان */
+.articles-title {
+    font-size: 2.8rem;
+    font-weight: 900;
+    color: #232946;
+    background: linear-gradient(135deg, #eaf2fb 60%, #d1dbe8 100%);
+    border: 3px solid #232946;
+    border-radius: 24px;
+    padding: 20px 0;
+    margin-bottom: 30px;
+}
+
+/* البحث */
+.search-container {
+    position: relative;
+    width: 280px;
+    margin: 0 0 30px auto; /* يمين */
+}
+
+.search-box {
+    width: 100%;
+    padding: 12px 40px 12px 18px;
+    border: none;
+    border-radius: 30px;
+    background: #f1f3ff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    font-size: 14px;
+    direction: rtl;
+    text-align: right;
+}
+
+.search-container::after {
+    content: "";
+    position: absolute;
+    right: 10px;
+    top: 35%;
+    width: 20px;
+    height: 20px;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='%232d7be5' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M21 20l-5.6-5.6a7 7 0 10-1.4 1.4L20 21l1-1zM10 16a6 6 0 110-12 6 6 0 010 12z'/></svg>");
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+/* Grid */
+.articles-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
+}
+
+/* الكرت */
+.article-card {
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: 0 6px 20px rgba(35,41,70,0.08);
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.article-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 70px;
+    background: linear-gradient(135deg, #2d7be5 0%, #6c63ff 50%, #a3bffa 100%);
+}
+
+.article-card:hover {
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 20px 50px rgba(107,99,255,0.25);
+}
+
+.article-title {
+    color: #fff;
+    font-size: 1.3rem;
+    font-weight: 800;
+    margin: 20px;
+    position: relative;
+    z-index: 2;
+}
+
+/* رابط كامل للكرت */
+.card-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    height: 100%;
+}
+
+/* زر الرجوع */
+.back {
+    display: inline-block;
+    margin-top: 30px;
+    color: #fff;
+    background: #232946;
+    padding: 8px 22px;
+    border-radius: 8px;
+    text-decoration: none;
+}
+
+.back:hover {
+    background: #2d7be5;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h1 class="articles-title">المقالات</h1>
+
+<div class="search-container">
+<input type="text" class="search-box" id="searchBox" placeholder="ابحث عن مقالة...">
+</div>
+
+<ul class="articles-list" id="articlesList"></ul>
+
+<a class="back" href="ex.html">العودة للصفحة الرئيسية</a>
+</div>
+
+<script>
+
+/* بيانات المقالات */
+const articles = [
+{
+    title: "مقالة النجاح",
+    keywords: "النجاح التفوق العمل",
+    category: "نجاح وتطوير",
+    link: "articles/article-success.html"
+},
+{
+    title: "مقالة الصديق الوفي",
+    keywords: "الصداقة الوفاء الحب",
+    category: "قصص وحياة",
+    link: "articles/article-friend.html"
+},
+{
+    title: "مقالة تطوير الذات",
+    keywords: "تطوير الذات النمو",
+    category: "نجاح وتطوير",
+    link: "articles/article-development.html"
+},
+{
+    title: "مقالة القراءة الفعّالة",
+    keywords: "القراءة الكتب",
+    category: "تعليم وقراءة",
+    link: "articles/article-reading.html"
+},
+{
+    title: "مقالة التفكير الإيجابي",
+    keywords: "التفكير الإيجابي الحياة",
+    category: "تفكير ونفسية",
+    link: "articles/article-positive.html"
+},
+{
+    title: "مقالة الصحة النفسية",
+    keywords: "الصحة النفسية التوازن العقلي",
+    category: "تفكير ونفسية",
+    link: "articles/article-seha.html"
+}
+];
+
+/* عرض المقالات */
+function displayArticles(data) {
+    const list = document.getElementById("articlesList");
+    list.innerHTML = "";
+
+    if(data.length === 0){
+        list.innerHTML = "<li style='grid-column:1/-1;padding:40px;color:#a3bffa'>لم يتم العثور على مقالات مطابقة</li>";
+        return;
+    }
+
+    data.sort((a,b)=> a.category.localeCompare(b.category));
+
+    data.forEach(article => {
+        const li = document.createElement("li");
+        li.className = "article-card";
+
+        li.innerHTML = `
+            <a href="${article.link}" class="card-link" target="_blank" rel="noopener noreferrer">
+                <div class="article-title">${article.title}</div>
+            </a>
+        `;
+
+        list.appendChild(li);
+    });
+}
+
+/* فتح وإغلاق الأجزاء */
+document.getElementById("searchBox").addEventListener("keyup", applyFilters);
+
+function applyFilters(){
+const searchValue = document.getElementById("searchBox").value.trim();
+
+let filtered = articles.filter(article => {
+
+let matchSearch =
+article.title.includes(searchValue) ||
+article.keywords.includes(searchValue) ||
+article.category.includes(searchValue);
+
+return matchSearch;
+});
+
+displayArticles(filtered);
+}
+
+displayArticles(articles);
+
+</script>
+</body>
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>مكتبة البيان</title>
+	<style>
+		body {
+			background: linear-gradient(135deg, #232946 60%, #eaf2fb 100%);
+			min-height: 100vh;
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-start;
+			align-items: center;
+			font-family: 'Cairo', Arial, sans-serif;
+			margin: 0;
+		}
+		   .container {
+			   background: #f6f7fb;
+			   padding: 50px 40px 40px 40px;
+			   border-radius: 18px;
+			   box-shadow: 0 4px 24px rgba(35,41,70,0.12);
+			   text-align: center;
+			   margin-top: 40px;
+			   min-width: 1000px;
+			   min-height: 700px;
+			   max-width: 95vw;
+			   display: flex;
+			   flex-direction: column;
+			   align-items: center;
+			   justify-content: flex-start;
+			   position: relative;
+			   overflow: hidden;
+		   }
+		   .library-title {
+    font-size: 3rem;
+    font-weight: 900;
+    color: #fff;
+    background: linear-gradient(135deg, #232946 0%, #2d7be5 80%, #a3bffa 100%);
+    border: none;
+    border-radius: 48px;
+    box-shadow: 0 12px 32px rgba(45,123,229,0.18), 0 2px 8px rgba(35,41,70,0.10);
+    padding: 36px 0;
+    margin-bottom: 36px;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 8px #2d7be5;
+    transition: box-shadow 0.3s, transform 0.3s, background 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+    max-width: 800px;
+    position: relative;
+    overflow: hidden;
+}
+.library-title::before {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; top: 0; bottom: 0;
+    background: linear-gradient(90deg, rgba(163,191,250,0.15) 0%, rgba(45,123,229,0.08) 100%);
+    z-index: 0;
+    border-radius: 48px;
+    pointer-events: none;
+    animation: shine-effect 2.5s infinite linear;
+}
+@keyframes shine-effect {
+    0% { opacity: 0.7; }
+    50% { opacity: 1; }
+    100% { opacity: 0.7; }
+}
+.library-title span {
+    position: relative;
+    z-index: 1;
+}
+.library-title:hover {
+    box-shadow: 0 24px 64px rgba(45,123,229,0.28), 0 4px 16px rgba(35,41,70,0.18);
+    transform: scale(1.04);
+    background: linear-gradient(135deg, #2d7be5 0%, #232946 80%, #a3bffa 100%);
+}
+@keyframes vertical-border {
+    0% { border-radius: 40px; }
+    100% { border-radius: 60px; }
+}
+		h1 {
+			color: #232946;
+			font-size: 2.5rem;
+			margin-bottom: 18px;
+			letter-spacing: 2px;
+		}
+		p {
+			color: #232946;
+			font-size: 1.2rem;
+			margin-top: 0;
+		}
+		.sections {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+			gap: 60px;
+			margin-top: 60px;
+		}
+		   .section {
+			   background: #eaf2fb;
+			   border-radius: 30px;
+			   border: 2.5px solid #232946;
+			   box-shadow: 0 20px 10px rgba(35,41,70,0.07);
+			   padding: 10px 28px;
+			   min-width: 270px;
+			   min-height: 50px;
+			   max-width: 160px;
+			   display: flex;
+			   align-items: center;
+			   justify-content: center;
+			   text-align: center;
+			   margin-bottom: 20px;
+			   transition: transform 0.2s, box-shadow 0.3s, background 0.3s, opacity 0.4s;
+			   cursor: pointer;
+		   }
+		.section:hover {
+			transform: translateY(-6px) scale(1.03);
+			box-shadow: 0 6px 24px rgba(35,41,70,0.10);
+			background: linear-gradient(135deg, #eaf2fb, #d1dbe8);
+			opacity: 0.95;
+		}
+		   .section:active {
+			background: linear-gradient(135deg, #b6d0f7, #eaf2fb);
+			box-shadow: 0 2px 8px rgba(35,41,70,0.15);
+			opacity: 0.7;
+		   }
+		   .section:first-child {
+			   margin-bottom: 20px;
+		   }
+		   .section h2 {
+			   color: #232946;
+			   font-size: 1.8rem;
+			   margin-bottom: 11px;
+			   text-align: center;
+		   }
+		.section ul {
+			padding-right: 18px;
+			margin: 0;
+		}
+		.section li {
+			margin-bottom: 10px;
+			font-size: 1.05rem;
+		}
+		.section a {
+			color: #2d7be5;
+			text-decoration: none;
+		}
+		.section a:hover {
+			text-decoration: underline;
+		}
+		.supervision {
+			margin-top: 40px;
+			background: rgba(255, 255, 255, 0.9);
+			border: 2px solid #232946;
+			border-radius: 12px;
+			padding: 10px 15px;
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+			font-size: 1.2rem;
+			color: #232946;
+			font-weight: 600;
+			text-align: center;
+			display: inline-block;
+		}
+		.footer {
+			display: flex;
+			justify-content: space-between;
+			margin-top: -10px;
+			gap: 20px;
+		}
+		.container > * {
+			position: relative;
+			z-index: 1;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<h1 class="library-title"><span>مكتبة البَيان</span></h1>
+		   <div class="section">
+    <a href="books.html">
+        <h2>الكتب الإلكترونية</h2>
+    </a>
+</div>
+
+<div class="section">
+    <a href="articles.html">
+        <h2>المقالات</h2>
+    </a>
+</div>
+
+<div class="section">
+    <a href="stories.html">
+        <h2>القصص</h2>
+    </a>
+</div>
+		   </div>
+		   <!-- الأقسام المنفصلة أُزيلت لأن كل قسم أصبح في صفحة منفصلة -->
+		<div class="footer">
+			<p class="supervision">بإشراف مَدرسة خالد بن الوليد الثانوية</p>
+			<p class="supervision">مديرية لواء الموقر</p>
+		</div>
+	</div>
+</body>
+</html>
